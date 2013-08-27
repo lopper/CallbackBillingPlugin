@@ -233,7 +233,7 @@ public class CallbackBillingActivity extends DroidGap {
             showDialog(DIALOG_CANNOT_CONNECT_ID);
         }
         
-        super.loadUrl("file:///android_asset/www/index.html");
+        super.loadUrl("http://rpgserver.fpapps.com");
     }
     
     /**
