@@ -7,8 +7,11 @@ import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -437,7 +440,23 @@ public class CallbackBillingActivity extends DroidGap {
 	    	showDialog(DIALOG_BILLING_NOT_SUPPORTED_ID);
 	    }
     }
-    
+	public void onBackPressed()
+	{
+
+	    final AlertDialog d = new AlertDialog.Builder(this)
+        .setTitle("Really Exit?")
+        .setMessage("Are you sure you want to exit?")
+        .setNegativeButton(android.R.string.no, null)
+        .setPositiveButton(android.R.string.yes, new OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int arg1) {
+            	dialog.dismiss();
+            	finish();   
+            }
+        }).create();
+	    
+	    d.show();
+		
     public void startRestoringDatabase() {
     	Log.d(TAG, "================Start restoring database===============");
     	restoreDatabase();
