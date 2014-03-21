@@ -13,12 +13,14 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
 
+import com.funpokes.android.RPG.R;
 import com.phonegap.DroidGap;
 import com.phonegap.api.PluginResult;
 import com.phonegap.plugin.billing.plugin.BillingService;
@@ -236,7 +238,16 @@ public class CallbackBillingActivity extends DroidGap {
             showDialog(DIALOG_CANNOT_CONNECT_ID);
         }
         
-        super.loadUrl("http://rpgserver.fpapps.com");
+    	// REMEMBER TO SET THE INAPP PURCHASE KEY in CallbackBilling. security.java
+        super.setBooleanProperty("loadInWebView", true);
+        super.setIntegerProperty("backgroundColor", Color.TRANSPARENT);
+		super.setIntegerProperty("splashscreen", R.drawable.splash);
+        super.onCreate(savedInstanceState);
+  
+        //super.loadUrl("file:///android_asset/www/index-billing.html");
+        //super.loadUrl("http://rpgserver.fpapps.com");
+        super.appView.setBackgroundResource(R.drawable.background);
+        super.appView.setBackgroundColor(0);
     }
     
     /**
@@ -432,11 +443,11 @@ public class CallbackBillingActivity extends DroidGap {
     	fireJavaScriptEvent("test", "");
     }
 
-    public void startRequestingPurchase(String productId, CallbackBillingPlugin plugin) {
+    public void startRequestingPurchase(String productId, String developerPayload, CallbackBillingPlugin plugin) {
     	_pluginReference = plugin;
     	
     	mSku = productId;
-	    if (!mBillingService.requestPurchase(mSku, mPayloadContents)) {
+	    if (!mBillingService.requestPurchase(mSku, developerPayload)) {
 	    	showDialog(DIALOG_BILLING_NOT_SUPPORTED_ID);
 	    }
     }
@@ -639,14 +650,14 @@ public class CallbackBillingActivity extends DroidGap {
      */
 	private void fireJavaScriptEvent(String event, String JSONstring) {
 		Log.d(TAG, "[[[[[[[[["+ event +"]]]]]]]]]");
-		/*this.loadUrl("javascript:" +
+		this.loadUrl("javascript:" +
 				"(function() {" +
 				"var e = document.createEvent('Events');" +
 				"e.initEvent('" + event + "');" +
 				"e.result = '"+ JSONstring + "';" +
 				"document.dispatchEvent(e);" +
-			"})();");*/
-		//this.loadUrl("javascript:(function() { "+event+"('"+ JSONstring.toString() +"');})()");
-		//this.loadUrl("javascript:"+event+"("+ JSONstring.toString() +")");
+			"})();");
+		this.loadUrl("javascript:(function() { "+event+"('"+ JSONstring.toString() +"');})()");
+		this.loadUrl("javascript:"+event+"("+ JSONstring.toString() +")");
 	}    
 }

@@ -102,4 +102,8 @@ public class Consts {
     public static long BILLING_RESPONSE_INVALID_REQUEST_ID = -1;
 
     public static final boolean DEBUG = true;
+    
+    public static final String VERIFY_PURCHASE_URL = "http://rpgserver.fpapps.com/OfferValidateAndroid";
+    public static final String CREATE_NONCE_URL = "http://rpgserver.fpapps.com/NonceCreate";
+    public static final String DELETE_NONCE_URL = "http://rpgserver.fpapps.com/NonceDelete";
 }

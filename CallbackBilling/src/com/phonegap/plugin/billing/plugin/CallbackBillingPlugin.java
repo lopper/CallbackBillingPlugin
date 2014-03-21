@@ -28,6 +28,9 @@ public class CallbackBillingPlugin extends Plugin {
 			} else if (action.equals("requestPurchase")) {
 				String productId = args.getString(0);
 				Log.d(TAG, "productId = " + productId);
+				String developerPayload = null;
+				if(args.length() > 1)
+					developerPayload = args.getString(1);
 					
 				if (_callbackId != null) {
 					Log.d(TAG, "Last purchase is not finished");
@@ -37,7 +40,7 @@ public class CallbackBillingPlugin extends Plugin {
 				// Save this for the callback
 				this._callbackId = callbackId;
 				
-				return _requestPurchase(productId);
+				return _requestPurchase(productId, developerPayload);
 			} else if (action.equals("restoreDatabase")){
 				Log.d(TAG, "restore database");
 				_restoreDatabase();
@@ -63,11 +66,11 @@ public class CallbackBillingPlugin extends Plugin {
 		this._callbackId = null;
 	}
 
-	private PluginResult _requestPurchase(String productId) {
+	private PluginResult _requestPurchase(String productId, String developerPayload) {
 		try {
 			Log.d(TAG, "Request Purchase: " + productId);
 			
-			CallbackBillingActivity.eInstance.startRequestingPurchase(productId, this);
+			CallbackBillingActivity.eInstance.startRequestingPurchase(productId, developerPayload, this);
 
 			PluginResult pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
 			pluginResult.setKeepCallback(true);
