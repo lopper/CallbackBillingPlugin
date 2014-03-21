@@ -7,11 +7,8 @@ import java.util.Set;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -20,7 +17,6 @@ import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
 
-import com.funpokes.android.RPG.R;
 import com.phonegap.DroidGap;
 import com.phonegap.api.PluginResult;
 import com.phonegap.plugin.billing.plugin.BillingService;
@@ -237,17 +233,7 @@ public class CallbackBillingActivity extends DroidGap {
         if (!mBillingService.checkBillingSupported()) {
             showDialog(DIALOG_CANNOT_CONNECT_ID);
         }
-        
-    	// REMEMBER TO SET THE INAPP PURCHASE KEY in CallbackBilling. security.java
-        super.setBooleanProperty("loadInWebView", true);
-        super.setIntegerProperty("backgroundColor", Color.TRANSPARENT);
-		super.setIntegerProperty("splashscreen", R.drawable.splash);
-        super.onCreate(savedInstanceState);
-  
-        //super.loadUrl("file:///android_asset/www/index-billing.html");
-        //super.loadUrl("http://rpgserver.fpapps.com");
-        super.appView.setBackgroundResource(R.drawable.background);
-        super.appView.setBackgroundColor(0);
+
     }
     
     /**
@@ -451,23 +437,7 @@ public class CallbackBillingActivity extends DroidGap {
 	    	showDialog(DIALOG_BILLING_NOT_SUPPORTED_ID);
 	    }
     }
-	public void onBackPressed()
-	{
-
-	    final AlertDialog d = new AlertDialog.Builder(this)
-        .setTitle("Really Exit?")
-        .setMessage("Are you sure you want to exit?")
-        .setNegativeButton(android.R.string.no, null)
-        .setPositiveButton(android.R.string.yes, new OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int arg1) {
-            	dialog.dismiss();
-            	finish();   
-            }
-        }).create();
-	    
-	    d.show();
-		
+    
     public void startRestoringDatabase() {
     	Log.d(TAG, "================Start restoring database===============");
     	restoreDatabase();

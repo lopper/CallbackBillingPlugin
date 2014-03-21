@@ -20,7 +20,6 @@ import com.android.vending.billing.IMarketBillingService;
 import com.phonegap.plugin.billing.plugin.Consts.ResponseCode;
 import com.phonegap.plugin.billing.plugin.Security.VerifiedPurchase;
 
-
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ComponentName;
@@ -32,9 +31,12 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+
+import org.json.JSONException;
 
 
 /**
@@ -285,7 +287,7 @@ public class BillingService extends Service implements ServiceConnection {
 
         @Override
         protected long run() throws RemoteException {
-            mNonce = Security.generateNonce();
+				mNonce = Security.generateNonce();
 
             Bundle request = makeRequestBundle("GET_PURCHASE_INFORMATION");
             request.putLong(Consts.BILLING_REQUEST_NONCE, mNonce);
@@ -502,8 +504,13 @@ public class BillingService extends Service implements ServiceConnection {
      * @param signature the signature for the data, signed with the private key
      */
     private void purchaseStateChanged(int startId, String signedData, String signature) {
-        ArrayList<Security.VerifiedPurchase> purchases;
-        purchases = Security.verifyPurchase(signedData, signature);
+        Security.verifyPurchase(this, startId, signedData, signature);
+
+    }
+    
+    
+    public void verifyPurchases(int startId, ArrayList<Security.VerifiedPurchase> purchases)
+    {
         if (purchases == null) {
             return;
         }
@@ -520,6 +527,7 @@ public class BillingService extends Service implements ServiceConnection {
             String[] notifyIds = notifyList.toArray(new String[notifyList.size()]);
             confirmNotifications(startId, notifyIds);
         }
+
     }
 
     /**
